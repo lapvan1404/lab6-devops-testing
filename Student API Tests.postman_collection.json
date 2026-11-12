@@ -1,0 +1,186 @@
+{
+  "info": {
+    "_postman_id": "70cabab2-a97d-4a66-8a61-86f52681b29b",
+    "name": "Student API Tests",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "54628428",
+    "_collection_link": "https://go.postman.co/collection/54628428-70cabab2-a97d-4a66-8a61-86f52681b29b?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "GET All Students",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\n    pm.response.to.have.status(200);\n});\n\npm.test(\"Response has success field\", function () {\n    var jsonData = pm.response.json();\n    pm.expect(jsonData.success).to.be.true;\n});\n\npm.test(\"Data is an array\", function () {\n    var jsonData = pm.response.json();\n    pm.expect(jsonData.data).to.be.an('array');\n});\n\npm.test(\"Has at least 3 students\", function () {\n    var jsonData = pm.response.json();\n    pm.expect(jsonData.data.length).to.be.at.least(3);\n});\n\npm.test(\"Response time < 200ms\", function () {\n    pm.expect(pm.response.responseTime).to.be.below(200);\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/students",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "students"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET Student by ID",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", () => {\n    pm.response.to.have.status(200);\n});\n\npm.test(\"Returns correct student\", () => {\n    var jsonData = pm.response.json();\n    pm.expect(jsonData.data.name).to.equal(\"Nông Văn Lập\");\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/students/dtc235180109",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "students",
+            "dtc235180109"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST Create Student",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 201\", () => {\n    pm.response.to.have.status(201);\n});\n\npm.test(\"Returns created student\", () => {\n    var jsonData = pm.response.json();\n    pm.expect(jsonData.data.name).to.equal(\"Pham Thi D\");\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"id\": \"SV004\",\n    \"name\": \"Pham Thi D\",\n    \"age\": 22,\n    \"grade\": \"K19\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/students",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "students"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET Student Not Found",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 404\", () => {\n    pm.response.to.have.status(404);\n});\n\npm.test(\"Returns error message\", () => {\n    var jsonData = pm.response.json();\n    pm.expect(jsonData.success).to.be.false;\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/students/SV999",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "students",
+            "SV999"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST Missing Fields",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 400\", () => {\n    pm.response.to.have.status(400);\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"name\": \"Test\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/students",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "students"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
